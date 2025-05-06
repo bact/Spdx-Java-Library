@@ -123,6 +123,8 @@ public final class DownloadCache {
     }
 
     /**
+     * Retrieve the singleton instance of the {@code DownloadCache} class
+     *
      * @return The singleton instance of the DownloadCache class.
      */
     public static DownloadCache getInstance() {
@@ -153,6 +155,7 @@ public final class DownloadCache {
 
     /**
      * Resets (deletes) the local cache
+     *
      * @throws IOException on IO error
      */
     public void resetCache() throws IOException {
@@ -162,6 +165,9 @@ public final class DownloadCache {
     }
 
     /**
+     * Retrieve an {@link InputStream} for the given URL,
+     * with redirects restricted to known SPDX hosts
+     *
      * @param url The URL to get an input stream for.  Note that redirects issued by this url are restricted to known
      *            SPDX hosts. Redirects to other hosts will cause an IOException to be thrown.
      * @return An InputStream for url, or null if url is null.  Note that this InputStream may be of different concrete
@@ -173,6 +179,9 @@ public final class DownloadCache {
     }
 
     /**
+     * Retrieve an {@link InputStream} for the given URL,
+     * with an option to restrict redirects
+     *
      * @param url The URL to get an input stream for.
      * @param restrictRedirects A flag that controls whether redirects returned by url are restricted to known SPDX
      *                          hosts or not. Defaults to true. USE EXTREME CAUTION WHEN TURNING THIS OFF!
@@ -193,6 +202,10 @@ public final class DownloadCache {
     }
 
     /**
+     * Retrieve an {@link InputStream} for the given URL,
+     * ignoring the local cache,
+     * with an option to restrict redirects
+     *
      * @param url The URL to get an input stream for, ignoring the local cache.
      * @param restrictRedirects A flag that controls whether redirects returned by url are restricted to known SPDX
      *                          hosts or not. Defaults to true. USE EXTREME CAUTION WHEN TURNING THIS OFF!
@@ -249,7 +262,9 @@ public final class DownloadCache {
     }
 
     /**
-     * Checks the cache for content from the given url, and brings the cached content up to date if it's stale.
+     * Checks the cache for content from the given url,
+     * and brings the cached content up to date if it's stale
+     *
      * @param url The url to check.
      * @param restrictRedirects A flag that controls whether redirects returned by url are restricted to known SPDX
      *                          hosts or not. Defaults to true. USE EXTREME CAUTION WHEN TURNING THIS OFF!
@@ -293,9 +308,12 @@ public final class DownloadCache {
     }
 
     /**
+     * Handle a cache miss
+     * <p>
      * Process a cache miss, which involves downloading the content from the given url, and writing out an associated
      * metadata file (in JSON format) containing sufficient information for the cache to check for staleness in the
      * future.
+     *
      * @param connection The open HTTP connection to download and cache.
      * @param restrictRedirects A flag that controls whether redirects returned by url are restricted to known SPDX
      *                          hosts or not. Defaults to true. USE EXTREME CAUTION WHEN TURNING THIS OFF!
@@ -327,9 +345,12 @@ public final class DownloadCache {
     }
 
     /**
+     * Handle a cache miss
+     * <p>
      * Process a cache miss, which involves downloading the content from the given url, and writing out an associated
      * metadata file (in JSON format) containing sufficient information for the cache to check for staleness in the
-     * future.
+     * future
+     *
      * @param url The url to download and cache.
      * @param restrictRedirects A flag that controls whether redirects returned by url are restricted to known SPDX
      *                          hosts or not. Defaults to true. USE EXTREME CAUTION WHEN TURNING THIS OFF!
@@ -344,6 +365,7 @@ public final class DownloadCache {
 
     /**
      * Processes an HTTP redirect (if any) returned by the given connection, returning the URL
+     *
      * @param connection The connection to check for a redirect.
      * @param restrictRedirects A flag that controls whether redirects returned by url are restricted to known SPDX
      *                          hosts or not. Defaults to true. USE EXTREME CAUTION WHEN TURNING THIS OFF!
@@ -377,6 +399,7 @@ public final class DownloadCache {
 
     /**
      * Reads a metadata file out of local cache.
+     *
      * @param metadataFile The metadata file to read.
      * @return The metadata read from the file, or null if the file doesn't exist or there was an error while reading
      *         it.
@@ -395,6 +418,7 @@ public final class DownloadCache {
 
     /**
      * Writes a metadata file to the local cache.
+     *
      * @param metadataFile The metadata file to write. Note: if it already exists it will be silently overwritten.
      * @param metadata The metadata to write to the file.
      * @throws IOException When an IO error of some kind occurs.
@@ -408,6 +432,7 @@ public final class DownloadCache {
 
     /**
      * Writes a content file to the local cache.
+     *
      * @param is The InputStream to read the content from. Note: this InputStream must be open at the time this
      *           method is called, and will be fully consumed and closed by this method.
      * @param cachedFile The content file to write to. Note: if it already exists it will be silently overwritten.
@@ -426,7 +451,8 @@ public final class DownloadCache {
     }
 
     /**
-     * Attempts to parse s as if it were an ISO8601 formatted String.
+     * Attempts to parse s as if it were an ISO 8601 formatted String.
+     *
      * @param s The string to attempt to parse.
      * @return The Instant for that ISO8601 value if parsing succeeded, or null if it didn't.
      */
@@ -444,6 +470,8 @@ public final class DownloadCache {
     }
 
     /**
+     * Encode a string in BASE64
+     *
      * @param s The String to BASE64 encode.
      * @return The BASE64 encoding of s (as UTF-8).
      */
@@ -456,6 +484,8 @@ public final class DownloadCache {
     }
 
     /**
+     * Encode a URL in BASE64
+     *
      * @param u The URL to BASE64 encode.
      * @return The BASE64 encoding of u (as a UTF-8 encoded String).
      */
