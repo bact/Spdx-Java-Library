@@ -708,6 +708,13 @@ public class CompareTemplateOutputHandler implements
 		 * @param differences list of lines where the difference was found
 		 */
 		public void setDifferences(List<LineColumn> differences) {
+			differences.sort((d1, d2) -> {
+				int lineComparison = Integer.compare(d1.getLine(), d2.getLine());
+				if (lineComparison != 0) {
+					return lineComparison;
+				}
+				return Integer.compare(d1.getColumn(), d2.getColumn());
+			});
 			this.differences = differences;
 		}
 		
@@ -755,6 +762,15 @@ public class CompareTemplateOutputHandler implements
 						lastOptionalDifference.getDifferenceMessage();
 			}
 			this.differenceFound = true;
+
+			// Ensure sorted order of differences
+			this.differences.sort((d1, d2) -> {
+				int lineComparison = Integer.compare(d1.getLine(), d2.getLine());
+				if (lineComparison != 0) {
+					return lineComparison;
+				}
+				return Integer.compare(d1.getColumn(), d2.getColumn());
+			});
 		}
 	}
 
