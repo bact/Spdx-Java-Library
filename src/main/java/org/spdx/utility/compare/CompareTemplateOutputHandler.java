@@ -456,7 +456,6 @@ public class CompareTemplateOutputHandler implements
 		 */
 		private int matchVariable(List<Integer> matchingStartTokens, String[] matchTokens, int startToken,
 								  String originalText, DifferenceDescription differences, Map<Integer, LineColumn> tokenToLocation) {
-			
 			if (differences.isDifferenceFound()) {
 				return -1;
 			}
@@ -650,11 +649,13 @@ public class CompareTemplateOutputHandler implements
 		
 		/**
 		 * Creates a difference description
+		 *
 		 * @param differenceFound if true, a difference was found
 		 * @param differenceMessage Message describing the differences
 		 * @param differences list of lines where the difference was found
 		 */
-		public DifferenceDescription(boolean differenceFound, String differenceMessage, List<LineColumn> differences) {
+		public DifferenceDescription(boolean differenceFound, String differenceMessage,
+				List<LineColumn> differences) {
 			this.differenceFound = differenceFound;
 			this.differenceMessage = differenceMessage;
 			this.differences = differences;
@@ -705,20 +706,31 @@ public class CompareTemplateOutputHandler implements
 		}
 
 		/**
-		 * @param differences list of lines where the difference was found
+		 * Sort the differences by line and column
 		 */
-		public void setDifferences(List<LineColumn> differences) {
-			differences.sort((d1, d2) -> {
+		private void sortDifferences() {
+			this.differences.sort((d1, d2) -> {
 				int lineComparison = Integer.compare(d1.getLine(), d2.getLine());
 				if (lineComparison != 0) {
 					return lineComparison;
 				}
 				return Integer.compare(d1.getColumn(), d2.getColumn());
 			});
+		}
+
+		/**
+		 * Set the differences
+		 * 
+		 * @param differences list of lines where the difference was found
+		 */
+		public void setDifferences(List<LineColumn> differences) {
 			this.differences = differences;
+			sortDifferences();
 		}
 		
 		/**
+		 * Add a difference to the list of differences, along with a message
+		 *
 		 * @param location Location in the text of the difference
 		 * @param token Token causing the difference
 		 * @param msg Message for the difference
@@ -741,6 +753,7 @@ public class CompareTemplateOutputHandler implements
                         location.getColumn() +" \""+
 						token+"\"";
 				this.differences.add(location);
+				sortDifferences();  // Ensure sorted order of differences
 			} else {
 				this.differenceMessage = this.differenceMessage + " at end of text";
 			}
@@ -762,15 +775,6 @@ public class CompareTemplateOutputHandler implements
 						lastOptionalDifference.getDifferenceMessage();
 			}
 			this.differenceFound = true;
-
-			// Ensure sorted order of differences
-			this.differences.sort((d1, d2) -> {
-				int lineComparison = Integer.compare(d1.getLine(), d2.getLine());
-				if (lineComparison != 0) {
-					return lineComparison;
-				}
-				return Integer.compare(d1.getColumn(), d2.getColumn());
-			});
 		}
 	}
 
