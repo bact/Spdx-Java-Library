@@ -242,8 +242,11 @@ public class StoredTypedItem extends TypedValue {
 			List<Object> list = idValueMap.get(id);
 			if (list == null) {
 				// handle the very small window where this may have gotten removed
-				list = new ArrayList<>();
-				idValueMap.putIfAbsent(id, list);
+				List<Object> newList = new ArrayList<>();
+				List<Object> existingList = idValueMap.putIfAbsent(id, newList);
+				// another thread may have won the race to insert;
+				// use whichever list actually ended up in the map
+				list = existingList != null ? existingList : newList;
 			}
 			return list.add(value);
 		} catch (Exception ex) {
