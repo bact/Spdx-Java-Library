@@ -238,13 +238,7 @@ public class StoredTypedItem extends TypedValue {
 			} else {
 				id = NO_ID_ID;
 			}
-			idValueMap.putIfAbsent(id, new ArrayList<>());
-			List<Object> list = idValueMap.get(id);
-			if (list == null) {
-				// handle the very small window where this may have gotten removed
-				list = new ArrayList<>();
-				idValueMap.putIfAbsent(id, list);
-			}
+			List<Object> list = idValueMap.computeIfAbsent(id, key -> new ArrayList<>());
 			return list.add(value);
 		} catch (Exception ex) {
 			throw new SpdxInvalidTypeException("Invalid list type for "+propertyDescriptor);
