@@ -159,6 +159,19 @@ public class StoredTypedItemTest extends TestCase {
 	}
 
 	/**
+	 * Floating point values must be accepted in lists as they are for single values
+	 */
+	public void testAddFloatingPointValueToList() throws InvalidSPDXAnalysisException {
+		StoredTypedItem sti = new StoredTypedItem(TEST_OBJECT_URI1, TEST_TYPE1, "SPDX-2.3");
+		sti.addValueToList(TEST_LIST_PROPERTIES[0], 0.35d);
+		sti.addValueToList(TEST_LIST_PROPERTIES[0], 1.5f);
+		List<?> result = InMemSpdxStoreTest.toImmutableList(sti.getValueList(TEST_LIST_PROPERTIES[0]));
+		assertEquals(2, result.size());
+		assertTrue(result.contains(0.35d));
+		assertTrue(result.contains(1.5f));
+	}
+
+	/**
 	 * Test method for {@link org.spdx.storage.simple.StoredTypedItem#getValueList(java.lang.String)}.
 	 */
 	public void testGetValueList() throws InvalidSPDXAnalysisException {
