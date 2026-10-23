@@ -37,6 +37,7 @@ import org.spdx.core.InvalidSPDXAnalysisException;
 import org.spdx.core.ModelRegistry;
 import org.spdx.core.ModelRegistryException;
 import org.spdx.core.SpdxInvalidTypeException;
+import org.spdx.core.TypedLiteral;
 import org.spdx.core.TypedValue;
 import org.spdx.storage.IModelStore;
 import org.spdx.storage.PropertyDescriptor;
@@ -167,6 +168,7 @@ public class StoredTypedItem extends TypedValue {
 				!Double.class.isAssignableFrom(value.getClass()) &&
 				!Float.class.isAssignableFrom((value.getClass())) &&
 				!TypedValue.class.isAssignableFrom(value.getClass()) &&
+				!TypedLiteral.class.isAssignableFrom(value.getClass()) &&
 				!(value instanceof IndividualUriValue)) {
 			throw new SpdxInvalidTypeException(value.getClass() +" is not a supported class to be stored.");
 		}
@@ -216,6 +218,7 @@ public class StoredTypedItem extends TypedValue {
 				!Double.class.isAssignableFrom(value.getClass()) &&
 				!Float.class.isAssignableFrom(value.getClass()) &&
 				!TypedValue.class.isAssignableFrom(value.getClass()) &&
+				!TypedLiteral.class.isAssignableFrom(value.getClass()) &&
 				!(value instanceof IndividualUriValue)) {
 			throw new SpdxInvalidTypeException(value.getClass() +" is not a supported class to be stored.");
 		}

@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.spdx.core.InvalidSPDXAnalysisException;
+import org.spdx.core.TypedLiteral;
 import org.spdx.core.TypedValue;
 import org.spdx.library.SpdxModelFactory;
 import org.spdx.library.model.v2.Relationship;
@@ -169,6 +170,23 @@ public class StoredTypedItemTest extends TestCase {
 		assertEquals(2, result.size());
 		assertTrue(result.contains(0.35d));
 		assertTrue(result.contains(1.5f));
+	}
+
+	/**
+	 * Typed literals must be accepted as single values and in lists
+	 */
+	public void testTypedLiteralValues() throws InvalidSPDXAnalysisException {
+		StoredTypedItem sti = new StoredTypedItem(TEST_OBJECT_URI1, TEST_TYPE1, "SPDX-2.3");
+		TypedLiteral decimal = new TypedLiteral("0.35", "http://www.w3.org/2001/XMLSchema#decimal");
+		TypedLiteral dateTime = new TypedLiteral("2026-10-23T00:00:00Z", "http://www.w3.org/2001/XMLSchema#dateTime");
+		sti.setValue(TEST_VALUE_PROPERTIES[0], decimal);
+		assertEquals(decimal, sti.getValue(TEST_VALUE_PROPERTIES[0]));
+		sti.addValueToList(TEST_LIST_PROPERTIES[0], decimal);
+		sti.addValueToList(TEST_LIST_PROPERTIES[0], dateTime);
+		List<?> result = InMemSpdxStoreTest.toImmutableList(sti.getValueList(TEST_LIST_PROPERTIES[0]));
+		assertEquals(2, result.size());
+		assertTrue(result.contains(decimal));
+		assertTrue(result.contains(dateTime));
 	}
 
 	/**
